@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+<title>가위-바위-보</title>
+<link rel="stylesheet" href="/static/bootstrap.min.css"/>
+<link rel="stylesheet" href="/static/bootstrap-theme.min.css"/>
+<link rel="stylesheet" href="/static/style.css"/>
+<style>
+    #winner {
+        text-align: center;
+    }
+
+    #winner h1 {
+        font-size: 400%;
+    }
+
+    #winner p {
+        font-size: 200%;
+    }
+
+    #final-p1, #semifinal-g1-p1, #semifinal-g2-p1 {
+        display: inline-block;
+        margin-left: 4%;
+        width: 40%;
+        text-align: right;
+    }
+
+    #final-vs, #semifinal-g1-vs, #semifinal-g2-vs {
+        display: inline-block;
+        width: 10%;
+        text-align: center;
+        margin-top: -3em;
+        vertical-align: middle;
+    }
+
+    #final-p2, #semifinal-g1-p2, #semifinal-g2-p2 {
+        display: inline-block;
+        margin-right: 4%;
+        width: 40%;
+        float: right;
+        text-align: left;
+    }
+
+    .players ul {
+        list-style: none;
+    }
+
+    .players li {
+        display: inline;
+    }
+
+    .game-p1, .game-vs, .game-p2 {
+        display: inline;
+    }
+
+    .game-p1 h1, .game-p2 h1 {
+        display: inline;
+        font-size: 2rem;
+    }
+
+    .game-p1 p, .game-p2 p {
+        display: inline;
+        font-size: 1em;
+        color: #666;
+    }
+
+    .player-stat, .game-stat {
+        color: #999;
+    }
+
+    #popup {
+        display: none;
+        background: white;
+        border: 2px solid #000;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 500px;
+        height: 300px;
+        padding-left: 20px;
+        padding-top: 30px;
+        margin-left: -250px;
+        margin-top: -150px;
+    }
+
+    #popup p {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* by outsider */
+
+    .hand {
+        transform: rotate(90deg);
+    }
+
+    .hand.start {
+        animation: shake 2.2s cubic-bezier(.36, .07, .19, .97) both;
+        transform: translate3d(0, 0, 0) rotate(90deg);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    .hand.right {
+        transform: rotate(270deg);
+    }
+
+    .hand.right.start {
+        animation: shake2 2.2s cubic-bezier(.36, .07, .19, .97) both;
+        transform: translate3d(0, 0, 0) rotate(270deg);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    @keyframes shake {
+        50% {
+            transform: translate3d(0, 0, 0) rotate(90deg);
+        }
+        60% {
+            transform: translate3d(0, -30px, 0) rotate(45deg);
+        }
+        68% {
+            transform: translate3d(0, 0, 0) rotate(90deg);
+        }
+        76% {
+            transform: translate3d(0, -30px, 0) rotate(45deg);
+        }
+        84% {
+            transform: translate3d(0, 0, 0) rotate(90deg);
+        }
+        92% {
+            transform: translate3d(0, -30px, 0) rotate(45deg);
+        }
+    }
+
+    @keyframes shake2 {
+        50% {
+            transform: translate3d(0, 0, 0) rotate(270deg);
+        }
+        60% {
+            transform: translate3d(0, -30px, 0) rotate(315deg);
+        }
+        68% {
+            transform: translate3d(0, 0, 0) rotate(270deg);
+        }
+        76% {
+            transform: translate3d(0, -30px, 0) rotate(315deg);
+        }
+        84% {
+            transform: translate3d(0, 0, 0) rotate(270deg);
+        }
+        92% {
+            transform: translate3d(0, -30px, 0) rotate(315deg);
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div id="header">
+    <div class="jumbotron">
+        <h1><a href="/">가위바위보</a>
+            <small>코딩배틀</small>
+        </h1>
+        <div class="text-center">
+            <img id="gawi" src="/static/gawi.png" alt="가위"/>
+            <img id="bawi" src="/static/bawi.png" alt="바위" style="display:none;"/>
+            <img id="bo" src="/static/bo.png" alt="보" style="display:none;"/>
+        </div>
+    </div>
+</div>
+
+    
+
+    
+
+    
+
+    
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">우승</h3>
+            </div>
+            <div class="panel-body">
+                <div id="winner">
+                    <h1>k239507</h1>
+                    <p>통산 <span class="player-stat">
+            <span class="stat-win">10549승</span>
+            <span class="stat-tie">8642무</span>
+            <span class="stat-lose">7809패</span>
+        </span></p>
+                </div>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">결승</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=2" class="btn btn-primary btn-block">결승 준비</a>
+                <a href="/play_games?round_of=2&match_count=10000" class="btn btn-primary btn-block">결승 진행</a>
+                <div id="final-p1">
+                    <h1>hulk</h1>
+                    <p><span class="game-stat">
+            <span class="stat-win">2582승</span>
+            <span class="stat-tie">3687무</span>
+            <span class="stat-lose">3731패</span>
+        </span></p>
+                </div>
+                <div id="final-vs">vs</div>
+                <div id="final-p2">
+                    <h1>k239507</h1>
+                    <p><span class="game-stat">
+            <span class="stat-win">3731승</span>
+            <span class="stat-tie">3687무</span>
+            <span class="stat-lose">2582패</span>
+        </span></p>
+                </div>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">준결승</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=2" class="btn btn-primary btn-block">결승 준비</a>
+                <a href="/play_games?round_of=4&match_count=5000" class="btn btn-primary btn-block">준결승 진행</a>
+                <div id="semifinal-g1">
+                    <div id="semifinal-g1-p1">
+                        <h1>eclipse1725</h1>
+                        <p><span class="game-stat">
+            <span class="stat-win">1352승</span>
+            <span class="stat-tie">1327무</span>
+            <span class="stat-lose">2321패</span>
+        </span></p>
+                    </div>
+                    <div id="semifinal-g1-vs">vs</div>
+                    <div id="semifinal-g1-p2">
+                        <h1>hulk</h1>
+                        <p><span class="game-stat">
+            <span class="stat-win">2321승</span>
+            <span class="stat-tie">1327무</span>
+            <span class="stat-lose">1352패</span>
+        </span></p>
+                    </div>
+                </div>
+                <div id="semifinal-g1">
+                    <div id="semifinal-g2-p1">
+                        <h1>k239507</h1>
+                        <p><span class="game-stat">
+            <span class="stat-win">1551승</span>
+            <span class="stat-tie">1949무</span>
+            <span class="stat-lose">1500패</span>
+        </span></p>
+                    </div>
+                    <div id="semifinal-g2-vs">vs</div>
+                    <div id="semifinal-g2-p2">
+                        <h1>hahanbyul</h1>
+                        <p><span class="game-stat">
+            <span class="stat-win">1500승</span>
+            <span class="stat-tie">1949무</span>
+            <span class="stat-lose">1551패</span>
+        </span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">8강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=4" class="btn btn-primary btn-block">준결승 준비</a>
+                <a href="/play_games?round_of=8&match_count=1000" class="btn btn-primary btn-block">8강 토너먼트 진행</a>
+                <ul class="games">
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>kathar0s_dev</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">276승</span>
+            <span class="stat-tie">177무</span>
+            <span class="stat-lose">547패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>eclipse1725</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">547승</span>
+            <span class="stat-tie">177무</span>
+            <span class="stat-lose">276패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>imjang57</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">484승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">516패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>k239507</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">516승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">484패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>hahanbyul</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">396승</span>
+            <span class="stat-tie">232무</span>
+            <span class="stat-lose">372패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>ssureymoon</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">372승</span>
+            <span class="stat-tie">232무</span>
+            <span class="stat-lose">396패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>h</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">315승</span>
+            <span class="stat-tie">348무</span>
+            <span class="stat-lose">337패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>hulk</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">337승</span>
+            <span class="stat-tie">348무</span>
+            <span class="stat-lose">315패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">16강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=8" class="btn btn-primary btn-block">8강 토너먼트 준비</a>
+                <a href="/play_games?round_of=16&match_count=1000" class="btn btn-primary btn-block">16강 토너먼트 진행</a>
+                <ul class="games">
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>hahanbyul</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">414승</span>
+            <span class="stat-tie">390무</span>
+            <span class="stat-lose">196패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>heejongahn</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">196승</span>
+            <span class="stat-tie">390무</span>
+            <span class="stat-lose">414패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>kathar0s_dev</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">396승</span>
+            <span class="stat-tie">322무</span>
+            <span class="stat-lose">282패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>jinsu0411</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">282승</span>
+            <span class="stat-tie">322무</span>
+            <span class="stat-lose">396패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>insanejflow</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">334승</span>
+            <span class="stat-tie">322무</span>
+            <span class="stat-lose">344패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>h</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">344승</span>
+            <span class="stat-tie">322무</span>
+            <span class="stat-lose">334패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>dlcndrl0302</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">312승</span>
+            <span class="stat-tie">360무</span>
+            <span class="stat-lose">328패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>imjang57</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">328승</span>
+            <span class="stat-tie">360무</span>
+            <span class="stat-lose">312패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>k239507</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">340승</span>
+            <span class="stat-tie">323무</span>
+            <span class="stat-lose">337패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>jincreator</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">337승</span>
+            <span class="stat-tie">323무</span>
+            <span class="stat-lose">340패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>hulk</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">342승</span>
+            <span class="stat-tie">316무</span>
+            <span class="stat-lose">342패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>bbqnn200</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">342승</span>
+            <span class="stat-tie">316무</span>
+            <span class="stat-lose">342패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>eclipse1725</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">325승</span>
+            <span class="stat-tie">355무</span>
+            <span class="stat-lose">320패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>hyungjun25</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">320승</span>
+            <span class="stat-tie">355무</span>
+            <span class="stat-lose">325패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>ssureymoon</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">0승</span>
+            <span class="stat-tie">1000무</span>
+            <span class="stat-lose">0패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>novelview9</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">0승</span>
+            <span class="stat-tie">1000무</span>
+            <span class="stat-lose">0패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">32강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=16" class="btn btn-primary btn-block">16강 토너먼트 준비</a>
+                <a href="/play_games?round_of=32&match_count=1000" class="btn btn-primary btn-block">32강 토너먼트 진행</a>
+                <ul class="games">
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>asciineo</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">0승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">1000패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>dlcndrl0302</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">1000승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">0패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>myhb9188</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">0승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">1000패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>hulk</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">1000승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">0패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>libelo28</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">5승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">995패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>kathar0s_dev</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">995승</span>
+            <span class="stat-tie">0무</span>
+            <span class="stat-lose">5패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>eclipse1725</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">370승</span>
+            <span class="stat-tie">375무</span>
+            <span class="stat-lose">255패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>emerald126</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">255승</span>
+            <span class="stat-tie">375무</span>
+            <span class="stat-lose">370패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>hahanbyul</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">427승</span>
+            <span class="stat-tie">184무</span>
+            <span class="stat-lose">389패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>milup2244</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">389승</span>
+            <span class="stat-tie">184무</span>
+            <span class="stat-lose">427패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>insanejflow</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">360승</span>
+            <span class="stat-tie">329무</span>
+            <span class="stat-lose">311패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>b_amethyst</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">311승</span>
+            <span class="stat-tie">329무</span>
+            <span class="stat-lose">360패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>k239507</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">350승</span>
+            <span class="stat-tie">345무</span>
+            <span class="stat-lose">305패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>chzmo4</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">305승</span>
+            <span class="stat-tie">345무</span>
+            <span class="stat-lose">350패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>ssureymoon</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">352승</span>
+            <span class="stat-tie">329무</span>
+            <span class="stat-lose">319패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>allieuslee</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">319승</span>
+            <span class="stat-tie">329무</span>
+            <span class="stat-lose">352패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>novelview9</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">341승</span>
+            <span class="stat-tie">357무</span>
+            <span class="stat-lose">302패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>lplabmini</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">302승</span>
+            <span class="stat-tie">357무</span>
+            <span class="stat-lose">341패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>astricmir</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">329승</span>
+            <span class="stat-tie">320무</span>
+            <span class="stat-lose">351패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>jincreator</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">351승</span>
+            <span class="stat-tie">320무</span>
+            <span class="stat-lose">329패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>whitewest87</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">337승</span>
+            <span class="stat-tie">311무</span>
+            <span class="stat-lose">352패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>h</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">352승</span>
+            <span class="stat-tie">311무</span>
+            <span class="stat-lose">337패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>heejongahn</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">339승</span>
+            <span class="stat-tie">349무</span>
+            <span class="stat-lose">312패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>imsmallj</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">312승</span>
+            <span class="stat-tie">349무</span>
+            <span class="stat-lose">339패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>ykhl1itj</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">314승</span>
+            <span class="stat-tie">346무</span>
+            <span class="stat-lose">340패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>hyungjun25</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">340승</span>
+            <span class="stat-tie">346무</span>
+            <span class="stat-lose">314패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>es0228</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">315승</span>
+            <span class="stat-tie">345무</span>
+            <span class="stat-lose">340패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>jinsu0411</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">340승</span>
+            <span class="stat-tie">345무</span>
+            <span class="stat-lose">315패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>ymh1989</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">317승</span>
+            <span class="stat-tie">346무</span>
+            <span class="stat-lose">337패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>bbqnn200</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">337승</span>
+            <span class="stat-tie">346무</span>
+            <span class="stat-lose">317패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <div class="game-p1">
+                                <h1>imjang57</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">332승</span>
+            <span class="stat-tie">342무</span>
+            <span class="stat-lose">326패</span>
+        </span></p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>anarcher</h1>
+                                <p><span class="game-stat">
+            <span class="stat-win">326승</span>
+            <span class="stat-tie">342무</span>
+            <span class="stat-lose">332패</span>
+        </span></p>
+                            </div>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    
+
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">예선전</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=32" class="btn btn-primary btn-block">32강 토너먼트 준비</a>
+                <a href="/play_games?round_of=0&match_count=100" class="btn btn-primary btn-block">풀리그 진행</a>
+                <a href="/prepare_full_league_games?max_player=91" class="btn btn-primary btn-block">풀리그
+                    준비</a>
+                <ul class="players">
+                   <li class="label label-default">allieuslee</li>
+<li class="label label-default">anarcher</li>
+<li class="label label-default">anotherluke</li>
+<li class="label label-default">asciineo</li>
+<li class="label label-default">ashon8813</li>
+<li class="label label-default">astricmir</li>
+<li class="label label-default">b_amethyst</li>
+<li class="label label-default">bbqnn200</li>
+<li class="label label-default">beomjun_gim3</li>
+<li class="label label-default">blanc_kob</li>
+<li class="label label-default">chitack_chang</li>
+<li class="label label-default">choiilji</li>
+<li class="label label-default">chzmo4</li>
+<li class="label label-default">data</li>
+<li class="label label-default">dbgustlr92</li>
+<li class="label label-default">dlcndrl0302</li>
+<li class="label label-default">dobestan</li>
+<li class="label label-default">dreamee9</li>
+<li class="label label-default">eclipse1725</li>
+<li class="label label-default">emerald126</li>
+<li class="label label-default">es0228</li>
+<li class="label label-default">h</li>
+<li class="label label-default">hahaha_dot_com</li>
+<li class="label label-default">hahanbyul</li>
+<li class="label label-default">hallazzang</li>
+<li class="label label-default">heejongahn</li>
+<li class="label label-default">hjkim3323</li>
+<li class="label label-default">hknam205_cs</li>
+<li class="label label-default">hoetaek</li>
+<li class="label label-default">hulk</li>
+<li class="label label-default">hur7411</li>
+<li class="label label-default">hyensoochoi</li>
+<li class="label label-default">hyungjun25</li>
+<li class="label label-default">imjang57</li>
+<li class="label label-default">imsmallj</li>
+<li class="label label-default">insanejflow</li>
+<li class="label label-default">jileeon</li>
+<li class="label label-default">jincreator</li>
+<li class="label label-default">jinsu0411</li>
+<li class="label label-default">junk3843</li>
+<li class="label label-default">jupiter1h</li>
+<li class="label label-default">k239507</li>
+<li class="label label-default">kathar0s_dev</li>
+<li class="label label-default">khseok1060</li>
+<li class="label label-default">kimdasom2833</li>
+<li class="label label-default">kluster86</li>
+<li class="label label-default">kmsnod</li>
+<li class="label label-default">kyoungyong</li>
+<li class="label label-default">labypuzzle</li>
+<li class="label label-default">latheledusjp</li>
+<li class="label label-default">libelo28</li>
+<li class="label label-default">lplabmini</li>
+<li class="label label-default">lucent</li>
+<li class="label label-default">marnitto</li>
+<li class="label label-default">milup2244</li>
+<li class="label label-default">mirirnet</li>
+<li class="label label-default">mizzking75</li>
+<li class="label label-default">munhyunsu_cs</li>
+<li class="label label-default">myhb9188</li>
+<li class="label label-default">nephtyws</li>
+<li class="label label-default">novelview9</li>
+<li class="label label-default">oh4851</li>
+<li class="label label-default">orange_b_jung</li>
+<li class="label label-default">outsideris</li>
+<li class="label label-default">powersimmani</li>
+<li class="label label-default">pyjaru</li>
+<li class="label label-default">qqwq9999</li>
+<li class="label label-default">rngksah</li>
+<li class="label label-default">sanghun900212</li>
+<li class="label label-default">sangwoong24yoon</li>
+<li class="label label-default">sankenan</li>
+<li class="label label-default">seokjoon_yun</li>
+<li class="label label-default">seungkyoo</li>
+<li class="label label-default">simneol09784</li>
+<li class="label label-default">smilup2244</li>
+<li class="label label-default">spark0017</li>
+<li class="label label-default">spark0405</li>
+<li class="label label-default">ssureymoon</li>
+<li class="label label-default">thnam</li>
+<li class="label label-default">tndls9304</li>
+<li class="label label-default">whitewest87</li>
+<li class="label label-default">wotjd1102</li>
+<li class="label label-default">wwee3631</li>
+<li class="label label-default">ykhl1itj</li>
+<li class="label label-default">ymh1989</li>
+<li class="label label-default">yo</li>
+<li class="label label-default">yongseonlee</li>
+<li class="label label-default">youngminn_kim</li>
+<li class="label label-default">yuniii</li>
+<li class="label label-default">zeppelin_min</li>
+<li class="label label-default">zoaclan</li> 
+                    
+                </ul>
+            </div>
+        </div>
+    
+
+    <div id="footer">
+    <hr>
+    <p>Copyright &copy; 2016 <a href="http://www.kakaocorp.com/">Kakao Corp.</a> All rights reserved. </p>
+</div>
+
+<div id="popup">
+    <img src="/static/bawi.png" class="hand left"/>
+    <img src="/static/bawi.png" class="hand right"/>
+
+    <p>powered by outsider from
+        <img src="data:image/png;base64,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"
+             width="50%"/>
+    </p>
+</div>
+
+<div style="position:fixed;top:0;right:0;width:100px;height:100px;">
+    <button id="open" type="button">play</button>
+    <br/>
+    <button id="close" type="button">close</button>
+</div>
+
+</div>
+
+<script src="/static/jquery-3.1.0.min.js"></script>
+<script src="/static/bootstrap.min.js"></script>
+<script src="/static/app.js"></script>
+
+</div>
+
+</body>
+</html>

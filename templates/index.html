@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "_head.html" %}
+</head>
+<body>
+
+<div class="container">
+    {% include "_header.html" %}
+
+    {% macro player_stat(p) -%}
+        <span class="player-stat">
+            <span class="stat-win">{{ p.win }}승</span>
+            <span class="stat-tie">{{ p.tie }}무</span>
+            <span class="stat-lose">{{ p.lose }}패</span>
+        </span>
+    {%- endmacro %}
+
+    {% macro game_stat_p1(g) -%}
+        <span class="game-stat">
+            <span class="stat-win">{{ g.p1_win }}승</span>
+            <span class="stat-tie">{{ g.tie }}무</span>
+            <span class="stat-lose">{{ g.p2_win }}패</span>
+        </span>
+    {%- endmacro %}
+
+    {% macro game_stat_p2(g) -%}
+        <span class="game-stat">
+            <span class="stat-win">{{ g.p2_win }}승</span>
+            <span class="stat-tie">{{ g.tie }}무</span>
+            <span class="stat-lose">{{ g.p1_win }}패</span>
+        </span>
+    {%- endmacro %}
+
+    {% if winner %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">우승</h3>
+            </div>
+            <div class="panel-body">
+                <div id="winner">
+                    <h1>{{ winner.name }}</h1>
+                    <p>통산 {{ player_stat(winner) }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if final %}
+        <div class="panel {% if not winner %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">결승</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/play_games?round_of=2&match_count={{ match_count_final }}" class="btn btn-primary btn-block">결승
+                    진행</a>
+                <div id="final-p1">
+                    <h1>{{ final.p1 }}</h1>
+                    <p>{{ game_stat_p1(final) }}</p>
+                </div>
+                <div id="final-vs">vs</div>
+                <div id="final-p2">
+                    <h1>{{ final.p2 }}</h1>
+                    <p>{{ game_stat_p2(final) }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if semifinal %}
+        <div class="panel {% if not final %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">준결승</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=2" class="btn btn-primary btn-block">결승 준비</a>
+                <a href="/play_games?round_of=4&match_count={{ match_count_semifinal }}"
+                   class="btn btn-primary btn-block">준결승 진행</a>
+                <div id="semifinal-g1">
+                    <div id="semifinal-g1-p1">
+                        <h1>{{ semifinal[0].p1 }}</h1>
+                        <p>{{ game_stat_p1(semifinal[0]) }}</p>
+                    </div>
+                    <div id="semifinal-g1-vs">vs</div>
+                    <div id="semifinal-g1-p2">
+                        <h1>{{ semifinal[0].p2 }}</h1>
+                        <p>{{ game_stat_p2(semifinal[0]) }}</p>
+                    </div>
+                </div>
+                <div id="semifinal-g1">
+                    <div id="semifinal-g2-p1">
+                        <h1>{{ semifinal[1].p1 }}</h1>
+                        <p>{{ game_stat_p1(semifinal[1]) }}</p>
+                    </div>
+                    <div id="semifinal-g2-vs">vs</div>
+                    <div id="semifinal-g2-p2">
+                        <h1>{{ semifinal[1].p2 }}</h1>
+                        <p>{{ game_stat_p2(semifinal[1]) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if round8 %}
+        <div class="panel {% if not semifinal %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">8강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=4" class="btn btn-primary btn-block">준결승 준비</a>
+                <a href="/play_games?round_of=8&match_count={{ match_count_tournament }}"
+                   class="btn btn-primary btn-block">8강 토너먼트 진행</a>
+                <ul class="games">
+                    {% for g in round8 %}
+                        <li>
+                            <div class="game-p1">
+                                <h1>{{ g.p1 }}</h1>
+                                <p>{{ game_stat_p1(g) }}</p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>{{ g.p2 }}</h1>
+                                <p>{{ game_stat_p2(g) }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if round16 %}
+        <div class="panel {% if not round8 %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">16강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=8" class="btn btn-primary btn-block">8강 토너먼트 준비</a>
+                <a href="/play_games?round_of=16&match_count={{ match_count_tournament }}"
+                   class="btn btn-primary btn-block">16강 토너먼트 진행</a>
+                <ul class="games">
+                    {% for g in round16 %}
+                        <li>
+                            <div class="game-p1">
+                                <h1>{{ g.p1 }}</h1>
+                                <p>{{ game_stat_p1(g) }}</p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>{{ g.p2 }}</h1>
+                                <p>{{ game_stat_p2(g) }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if round32 %}
+        <div class="panel {% if not round16 %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">32강 토너먼트</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=16" class="btn btn-primary btn-block">16강 토너먼트 준비</a>
+                <a href="/play_games?round_of=32&match_count={{ match_count_tournament }}"
+                   class="btn btn-primary btn-block">32강 토너먼트 진행</a>
+                <ul class="games">
+                    {% for g in round32 %}
+                        <li>
+                            <div class="game-p1">
+                                <h1>{{ g.p1 }}</h1>
+                                <p>{{ game_stat_p1(g) }}</p>
+                            </div>
+                            <div class="game-vs">vs</div>
+                            <div class="game-p2">
+                                <h1>{{ g.p2 }}</h1>
+                                <p>{{ game_stat_p2(g) }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if players %}
+        <div class="panel {% if not round32 %}panel-primary{% else %}panel-default{% endif %}">
+            <div class="panel-heading">
+                <h3 class="panel-title">예선전</h3>
+            </div>
+            <div class="panel-body">
+                <a href="/prepare_tournament_games?round_of=32" class="btn btn-primary btn-block">32강 토너먼트 준비</a>
+                <a href="/play_games?round_of=0&match_count={{ match_count_full_league }}"
+                   class="btn btn-primary btn-block">풀리그 진행</a>
+                <a href="/prepare_full_league_games?max_player={{ max_player }}" class="btn btn-primary btn-block">풀리그
+                    준비</a>
+                <ul class="players">
+                    {% for p in players %}
+                        <li class="label label-default">{{ p.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    {% include "_footer.html" %}
+</div>
+
+{% include "_foot.html" %}
+
+</div>
+
+</body>
+</html>

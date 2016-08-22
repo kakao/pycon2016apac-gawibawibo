@@ -1,0 +1,159 @@
+#winner {
+    text-align: center;
+}
+
+#winner h1 {
+    font-size: 400%;
+}
+
+#winner p {
+    font-size: 200%;
+}
+
+#final-p1, #semifinal-g1-p1, #semifinal-g2-p1 {
+    display: inline-block;
+    margin-left: 4%;
+    width: 40%;
+    text-align: right;
+}
+
+#final-vs, #semifinal-g1-vs, #semifinal-g2-vs {
+    display: inline-block;
+    width: 10%;
+    text-align: center;
+    margin-top: -3em;
+    vertical-align: middle;
+}
+
+#final-p2, #semifinal-g1-p2, #semifinal-g2-p2 {
+    display: inline-block;
+    margin-right: 4%;
+    width: 40%;
+    float: right;
+    text-align: left;
+}
+
+.players ul {
+    list-style: none;
+}
+
+.players li {
+    display: inline;
+}
+
+.game-p1, .game-vs, .game-p2 {
+    display: inline;
+}
+
+.game-p1 h1, .game-p2 h1 {
+    display: inline;
+    font-size: 2rem;
+}
+
+.game-p1 p, .game-p2 p {
+    display: inline;
+    font-size: 1em;
+    color: #666;
+}
+
+.player-stat, .game-stat {
+    color: #999;
+}
+
+#popup {
+    display: none;
+    background: white;
+    border: 2px solid #000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 300px;
+    padding-left: 20px;
+    padding-top: 30px;
+    margin-left: -250px;
+    margin-top: -150px;
+}
+
+#popup p {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#popup-remocon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+}
+
+#popup-remocon button {
+    width: 80px;
+}
+
+/* by outsider */
+
+.hand {
+    transform: rotate(90deg);
+}
+
+.hand.start {
+    animation: shake 2.2s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0) rotate(90deg);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.hand.right {
+    transform: rotate(270deg);
+}
+
+.hand.right.start {
+    animation: shake2 2.2s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0) rotate(270deg);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    50% {
+        transform: translate3d(0, 0, 0) rotate(90deg);
+    }
+    60% {
+        transform: translate3d(0, -30px, 0) rotate(45deg);
+    }
+    68% {
+        transform: translate3d(0, 0, 0) rotate(90deg);
+    }
+    76% {
+        transform: translate3d(0, -30px, 0) rotate(45deg);
+    }
+    84% {
+        transform: translate3d(0, 0, 0) rotate(90deg);
+    }
+    92% {
+        transform: translate3d(0, -30px, 0) rotate(45deg);
+    }
+}
+
+@keyframes shake2 {
+    50% {
+        transform: translate3d(0, 0, 0) rotate(270deg);
+    }
+    60% {
+        transform: translate3d(0, -30px, 0) rotate(315deg);
+    }
+    68% {
+        transform: translate3d(0, 0, 0) rotate(270deg);
+    }
+    76% {
+        transform: translate3d(0, -30px, 0) rotate(315deg);
+    }
+    84% {
+        transform: translate3d(0, 0, 0) rotate(270deg);
+    }
+    92% {
+        transform: translate3d(0, -30px, 0) rotate(315deg);
+    }
+}

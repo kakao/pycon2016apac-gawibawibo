@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "_head.html" %}
+</head>
+<body>
+
+<div class="container">
+    {% include "_header.html" %}
+
+    <ul>
+        <li><a href="/">ladder</a></li>
+        <li><a href="http://tech.kakao.com/pycon2016apac">about</a></li>
+    </ul>
+
+    <hr/>
+
+    <form action="/prepare_full_league_games" class="form-inline">
+        <div class="form-group">
+            <label>max_player</label>
+            <input name="max_player" type="number" value="{{ max_player }}" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">예선 풀리그 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="0" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ match_count_full_league }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">예선 풀리그 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/prepare_tournament_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="32" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">32강 토너먼트 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="32" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ match_count_tournament }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">32강 토너먼트 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/prepare_tournament_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="16" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">16강 토너먼트 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="16" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ match_count_tournament }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">16강 토너먼트 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/prepare_tournament_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="8" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">8강 토너먼트 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="8" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ MATCH_COUNT_TOURNAMENT }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">8강 토너먼트 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/prepare_tournament_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="4" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">준결승 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="4" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ MATCH_COUNT_SEMIFINAL }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">준결승 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/prepare_tournament_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="2" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">결승 준비</button>
+    </form>
+    <form action="/play_games" class="form-inline">
+        <div class="form-group">
+            <label>round_of</label>
+            <input name="round_of" type="number" value="2" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="{{ MATCH_COUNT_FINAL }}" required
+                   class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">결승 시작</button>
+    </form>
+
+    <hr/>
+
+    <form action="/reset_db" class="form-inline">
+        <button type="submit" class="btn btn-danger">reset_db</button>
+    </form>
+    <form action="/create_test_players" class="form-inline">
+        <div class="form-group">
+            <label>max_player</label>
+            <input name="max_player" type="number" value="10" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-danger">create_test_players</button>
+    </form>
+    <form action="/play_test_games" class="form-inline">
+        <div class="form-group">
+            <label>max_player</label>
+            <input name="max_player" type="number" value="10" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>tournament_round</label>
+            <input name="tournament_round" type="number" value="8" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>match_count</label>
+            <input name="match_count" type="number" value="10" required class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-danger">play_test_games</button>
+    </form>
+
+    {% include "_footer.html" %}
+</div>
+
+{% include "_foot.html" %}
+</body>
+</html>
